@@ -1,0 +1,63 @@
+CREATE OR REPLACE PROCEDURE circle_area_perimeter(p_radius IN NUMBER) AS
+  v_area NUMBER(10,2);
+  v_perimeter NUMBER(10,2);
+  pi CONSTANT NUMBER := 3.14159;
+BEGIN
+  v_area := pi * p_radius * p_radius;
+  v_perimeter := 2 * pi * p_radius;
+  DBMS_OUTPUT.PUT_LINE('Area = ' || v_area);
+  DBMS_OUTPUT.PUT_LINE('Perimeter = ' || v_perimeter);
+END;
+/
+
+EXEC circle_area_perimeter(5);
+
+
+
+CREATE TABLE BRANCH (
+  bname VARCHAR2(20),
+  yoj NUMBER(4),
+  intake NUMBER
+);
+
+CREATE TABLE STUDENT (
+  regdno NUMBER,
+  name VARCHAR2(30),
+  age NUMBER(2),
+  bname VARCHAR2(20),
+  perc NUMBER(5,2)
+);
+
+
+
+
+ALTER TABLE BRANCH ADD CONSTRAINT pk_branch PRIMARY KEY (bname);
+
+ALTER TABLE STUDENT ADD CONSTRAINT pk_student PRIMARY KEY (regdno);
+
+ALTER TABLE STUDENT ADD CONSTRAINT fk_branch FOREIGN KEY (bname)
+REFERENCES BRANCH(bname);
+
+
+
+SELECT * FROM STUDENT WHERE LOWER(name) LIKE 'a%';
+
+
+SELECT S.name
+FROM STUDENT S
+JOIN BRANCH B ON S.bname = B.bname
+WHERE B.yoj = 2008;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
