@@ -1,0 +1,64 @@
+CREATE VIEW view_name AS
+SELECT column1, column2, ...
+FROM table_name
+WHERE condition;
+
+//SINGLE
+CREATE VIEW view_name AS
+SELECT column1, column2
+FROM table_name
+WHERE condition;
+//MULTIPLE
+CREATE VIEW view_name AS
+SELECT t1.column1, t2.column2
+FROM table1 t1
+JOIN table2 t2 ON t1.key = t2.key
+WHERE condition;
+
+
+
+-- Create table
+CREATE TABLE STUDENT (
+  sid INTEGER PRIMARY KEY,
+  sname VARCHAR2(20),
+  perc NUMBER,
+  gender CHAR(1),
+  branch VARCHAR2(20)
+);
+
+-- Create view selecting only branch column
+CREATE VIEW branch_view AS
+SELECT branch FROM STUDENT;
+
+-- Insertion into STUDENT
+INSERT INTO STUDENT VALUES (1, 'Arjun', 80, 'M', 'CSE');
+INSERT INTO STUDENT VALUES (2, 'Bina', 77, 'F', 'IT');
+INSERT INTO STUDENT VALUES (3, 'Chirag', 70, 'M', 'ECE');
+
+-- Deletion using view (removes matching rows in underlying table)
+DELETE FROM branch_view WHERE branch = 'IT';
+
+-- Updation using view
+UPDATE branch_view SET branch = 'EEE' WHERE branch = 'CSE';
+
+-- Dropping the view
+DROP VIEW branch_view;
+
+
+
+
+BEGIN
+  INSERT INTO STUDENT VALUES (4, 'Disha', 90, 'F', 'CSE');
+  SAVEPOINT first_save;
+
+  INSERT INTO STUDENT VALUES (5, 'Eshan', 92, 'M', 'IT');
+  SAVEPOINT second_save;
+
+  UPDATE STUDENT SET branch='MECH' WHERE sid=4;
+
+  -- Rollback to first savepoint (this will undo insert of Eshan and update of Disha, Disha remains with original branch)
+  ROLLBACK TO first_save;
+
+  COMMIT; -- confirms insert of Disha only
+END;
+/
