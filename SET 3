@@ -1,0 +1,64 @@
+DECLARE
+  a NUMBER := 12;
+  b NUMBER := 27;
+  c NUMBER := 19;
+  max_num NUMBER;
+BEGIN
+  IF a > b AND a > c THEN
+    max_num := a;
+  ELSIF b > a AND b > c THEN
+    max_num := b;
+  ELSE
+    max_num := c;
+  END IF;
+  DBMS_OUTPUT.PUT_LINE('Largest number is: ' || max_num);
+END;
+/
+
+
+
+
+CREATE TABLE SAILORS (
+  sid NUMBER PRIMARY KEY,
+  sname VARCHAR2(20),
+  age NUMBER(4,1),
+  rating NUMBER
+);
+
+CREATE TABLE BOATS (
+  bid NUMBER PRIMARY KEY,
+  bname VARCHAR2(20),
+  color VARCHAR2(20)
+);
+
+CREATE TABLE RESERVES (
+  sid NUMBER REFERENCES SAILORS(sid),
+  bid NUMBER REFERENCES BOATS(bid),
+  day DATE
+);
+
+
+
+
+DELETE FROM SAILORS
+WHERE age > 30 AND rating < 10;
+
+
+
+SELECT DISTINCT B.color
+FROM SAILORS S, RESERVES R, BOATS B
+WHERE S.sid = R.sid
+  AND R.bid = B.bid
+  AND S.sname = 'Lubber';
+
+SELECT rating, MIN(age) AS youngest_age
+FROM SAILORS
+GROUP BY rating;
+
+SELECT age
+FROM SAILORS
+WHERE sname LIKE 'B__%' AND sname LIKE 'B%b';
+
+
+
+
