@@ -1,0 +1,28 @@
+DECLARE
+  input_string VARCHAR2(100) := 'Oracle';
+  reversed_string VARCHAR2(100) := '';
+BEGIN
+  FOR i IN REVERSE 1..LENGTH(input_string) LOOP
+    reversed_string := reversed_string || SUBSTR(input_string, i, 1);
+  END LOOP;
+  DBMS_OUTPUT.PUT_LINE('Reversed string: ' || reversed_string);
+END;
+/
+
+
+
+CREATE TABLE DEPT (
+  DEPTNO NUMBER(4) PRIMARY KEY,
+  DNAME VARCHAR2(14),
+  LOCATION VARCHAR2(14)
+);
+
+CREATE TABLE EMP (
+  EMPNO NUMBER(6) PRIMARY KEY,
+  ENAME VARCHAR2(10),
+  JOB VARCHAR2(9),
+  HIREDATE DATE,
+  SALARY NUMBER(8,2),
+  DEPTNO NUMBER(4) REFERENCES DEPT(DEPTNO)
+);
+
