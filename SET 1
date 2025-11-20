@@ -1,0 +1,75 @@
+SELECT column1, column2 FROM table_name ORDER BY column1 [ASC|DESC], column2 [ASC|DESC];
+
+SELECT column1, aggregate_function(column2) FROM table_name GROUP BY column1;
+
+SELECT column1, aggregate_function(column2) FROM table_name GROUP BY column1 ORDER BY column1;
+
+
+
+
+CREATE TABLE SAILORS (
+  sid NUMBER PRIMARY KEY,
+  sname VARCHAR2(20),
+  age NUMBER(3,1),
+  rating NUMBER
+);
+
+CREATE TABLE BOATS (
+  bid NUMBER PRIMARY KEY,
+  bname VARCHAR2(20),
+  color VARCHAR2(20)
+);
+
+CREATE TABLE RESERVES (
+  sid NUMBER REFERENCES SAILORS(sid),
+  bid NUMBER REFERENCES BOATS(bid),
+  day DATE
+);
+
+
+
+
+
+
+ALTER TABLE SAILORS
+ADD CONSTRAINT unique_rating UNIQUE (rating);
+
+
+
+
+SELECT sname
+FROM SAILORS
+WHERE sid IN (
+  SELECT sid
+  FROM RESERVES
+  WHERE bid IN (
+    SELECT bid
+    FROM BOATS
+    WHERE color = 'red'
+  )
+);
+
+
+SELECT sname, age FROM SAILORS;
+
+SELECT S.sid
+FROM SAILORS S
+WHERE S.sid IN (
+  SELECT R1.sid
+  FROM RESERVES R1, BOATS B1
+  WHERE R1.bid = B1.bid AND B1.color = 'red'
+)
+AND S.sid IN (
+  SELECT R2.sid
+  FROM RESERVES R2, BOATS B2
+  WHERE R2.bid = B2.bid AND B2.color = 'green'
+);
+
+
+
+
+
+
+
+
+
