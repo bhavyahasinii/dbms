@@ -1,0 +1,61 @@
+DECLARE
+  v_sid STUDENT.sid%TYPE;
+  v_sname STUDENT.sname%TYPE;
+  v_perc STUDENT.perc%TYPE;
+  cursor_found BOOLEAN := FALSE;
+BEGIN
+  FOR rec IN (SELECT sid, sname, perc FROM STUDENT WHERE perc >= 60) LOOP
+    DBMS_OUTPUT.PUT_LINE('SID: ' || rec.sid || ', Name: ' || rec.sname || ', Percentage: ' || rec.perc);
+    cursor_found := TRUE;
+  END LOOP;
+  IF NOT cursor_found THEN
+    RAISE_APPLICATION_ERROR(-20001, 'No student records found with First class.');
+  END IF;
+EXCEPTION
+  WHEN OTHERS THEN
+    DBMS_OUTPUT.PUT_LINE(SQLERRM);
+END;
+/
+
+
+
+SELECT S.*
+FROM Sailors S
+JOIN Reserves R ON S.sid = R.sid
+WHERE R.bid = 101;
+
+SELECT B.bname
+FROM Boats B
+JOIN Reserves R ON B.bid = R.bid
+JOIN Sailors S ON S.sid = R.sid
+WHERE S.sname = 'Bob';
+
+SELECT DISTINCT S.sname
+FROM Sailors S
+JOIN Reserves R ON S.sid = R.sid
+JOIN Boats B ON R.bid = B.bid
+WHERE B.color = 'red'
+ORDER BY S.age;
+
+SELECT DISTINCT S.sname
+FROM Sailors S
+JOIN Reserves R ON S.sid = R.sid;
+
+
+
+SELECT branch, COUNT(*) FROM STUDENT GROUP BY branch;
+
+SELECT branch, COUNT(*) FROM STUDENT GROUP BY branch HAVING COUNT(*) > 2;
+
+SELECT sname, perc FROM STUDENT ORDER BY perc DESC;
+
+
+
+
+SELECT TO_CHAR(SYSDATE, 'YYYY-MM-DD') FROM dual;
+
+SELECT TO_NUMBER('12345') FROM dual;
+
+
+
+
