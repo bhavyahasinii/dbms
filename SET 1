@@ -1,0 +1,63 @@
+DECLARE
+  n NUMBER := 10; -- Change this to your desired n
+  sum_n NUMBER := 0;
+  i NUMBER;
+BEGIN
+  FOR i IN 1..n LOOP
+    sum_n := sum_n + i;
+  END LOOP;
+  DBMS_OUTPUT.PUT_LINE('Sum of first ' || n || ' natural numbers is ' || sum_n);
+END;
+/
+
+Sum of first 10 natural numbers is 55
+
+
+CREATE TABLE SAILORS (
+  sid INTEGER PRIMARY KEY,
+  sname VARCHAR2(20),
+  age NUMBER(4,1),
+  rating NUMBER
+);
+
+CREATE TABLE BOATS (
+  bid INTEGER PRIMARY KEY,
+  bname VARCHAR2(20),
+  color VARCHAR2(20)
+);
+
+CREATE TABLE RESERVES (
+  sid INTEGER,
+  bid INTEGER,
+  day DATE,
+  FOREIGN KEY (sid) REFERENCES SAILORS(sid),
+  FOREIGN KEY (bid) REFERENCES BOATS(bid)
+);
+
+
+
+ALTER TABLE SAILORS
+ADD CONSTRAINT unique_rating UNIQUE (rating);
+
+
+
+SELECT s.sname
+FROM SAILORS s
+WHERE s.sid NOT IN (
+  SELECT r.sid 
+  FROM RESERVES r 
+  WHERE r.bid = 103
+);
+
+SELECT DISTINCT s.sname
+FROM SAILORS s
+JOIN RESERVES r ON s.sid = r.sid
+JOIN BOATS b ON r.bid = b.bid
+WHERE b.color = 'red';
+
+SELECT *
+FROM SAILORS
+WHERE rating > 7;
+
+
+
