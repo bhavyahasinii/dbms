@@ -1,0 +1,60 @@
+CREATE TABLE SAILORS (
+  sid INTEGER PRIMARY KEY,
+  sname VARCHAR2(20),
+  age NUMBER(4,1),
+  rating NUMBER
+);
+
+CREATE TABLE BOATS (
+  bid INTEGER PRIMARY KEY,
+  bname VARCHAR2(20),
+  color VARCHAR2(20)
+);
+
+CREATE TABLE RESERVES (
+  sid INTEGER,
+  bid INTEGER,
+  day DATE,
+  FOREIGN KEY (sid) REFERENCES SAILORS(sid),
+  FOREIGN KEY (bid) REFERENCES BOATS(bid)
+);
+
+
+
+SELECT DISTINCT s.sname
+FROM SAILORS s
+JOIN RESERVES r ON s.sid = r.sid;
+
+SELECT s.sid
+FROM SAILORS s
+JOIN RESERVES r ON s.sid = r.sid
+JOIN BOATS b ON r.bid = b.bid
+WHERE b.color = 'red'
+INTERSECT
+SELECT s.sid
+FROM SAILORS s
+JOIN RESERVES r ON s.sid = r.sid
+JOIN BOATS b ON r.bid = b.bid
+WHERE b.color = 'green';
+
+
+SELECT sname
+FROM SAILORS
+WHERE age = (SELECT MAX(age) FROM SAILORS);
+
+
+
+
+DECLARE
+  n NUMBER := 5;
+BEGIN
+  IF n MOD 2 = 0 THEN
+    DBMS_OUTPUT.PUT_LINE('Even number');
+  ELSE
+    DBMS_OUTPUT.PUT_LINE('Odd number');
+  END IF;
+END;
+/
+
+
+
